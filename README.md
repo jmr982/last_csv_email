@@ -3,7 +3,7 @@
 This repository is an attempt at creating a script for automating the process 
 of parsing and sending login data from a Linux server.
 
-## content	
+## Content	
 
 ### send_login_csv_email.py
 The script parses the output of the last and lastb commands (since yesterday) 
@@ -13,7 +13,9 @@ To automate (schedule) the execution of the script add it to the scheduler of
 your choise.
 
 Example using cron:
-0 6 * * *  "/usr/bin/python3 /home/user/send_login_csv_email.py"
+0 6 * * *  BASH_ENV=~/.bashrc bash -l –c "/usr/bin/python3 /home/user/send_login_csv_email.py"
+
+The example executes the script every day at 6 o'clock.
 
 ### parse_last_to_csv.py 
 The script parses and saves the output of the last(b) command as a csv formated 
@@ -39,3 +41,5 @@ Example:
 ./send_email.py 'email@email.com' 'subject' 'message.txt' 'attachment.jpg'
 
 When sending multiple attachments seperate filenames with a comma (,).
+
+## Documentation
