@@ -31,9 +31,12 @@ def parse_log_to_csv(log_file):
 if __name__ == "__main__":
     try:
         logtype = sys.argv[1]
-        if logtype != "lastb":  # add logic for last
-            raise SyntaxError("error: wrong command")
-    except:  # Generic exception used to catch both SyntaxError and IndexError
+        if logtype != "lastb" and logtype != "last":
+            raise SyntaxError(f"error: invalid argument \"{logtype}\"")
+    except SyntaxError as e:
+        print(e)
+        exit()
+    except IndexError:
         logtype = "last"
     try:
         since = sys.argv[2]
