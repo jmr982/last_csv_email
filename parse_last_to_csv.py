@@ -13,8 +13,8 @@ def get_log(logtype="last", since="yesterday"):
 
 def parse_log_to_csv(log_file):
     log_file = log_file.split("\n")
-    log_csv = "user,port,ip,time_start,time_end,duration\n"  # Header
-    for line in log_file[:-3]:
+    log_csv = "user,port,ip,time_start,time_end,duration\n"  # CSV header
+    for line in log_file[:-3]:  # Omit last 3 rows (lines)
         parsed_line = ""
         prev_value = 0
         for value in [9, 22, 39, 63, 66, 90, 120]:
@@ -28,11 +28,16 @@ def parse_log_to_csv(log_file):
 if __name__ == "__main__":
     try:
         logtype = sys.argv[1]
+        if logtype != "lastb":
+            raise Exception("wrong logtype")
+    except Exception as e:
+        logtype = "last"
+    try:
         since = sys.argv[2]
         file_name = f"{logtype}_since_{since.replace(' ', '_')}.csv"
-        csv = parse_log_to_csv(get_log())
+        csv = parse_log_to_csv(get_log(logtype, since))
         with open(file_name, "w") as f:
             f.write(csv)
-        print(f"Saved last login since {since} as: {file_name}")
+        print(f"Saved {logtype} login since {since} as: {file_name}")
     except Exception as e:
         print(e)
