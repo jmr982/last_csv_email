@@ -43,3 +43,14 @@ as an argument, followed by the subject, message/body, and attachment(s).
 When sending multiple attachments, separate filenames with a comma (,).
 
 ## Documentation
+Listed below are links to documents and articles used in the development of this project. 
+### Send email with Python
+* [Read and Send Email with Python](https://www.devdungeon.com/content/read-and-send-email-python)
+* [Sending Emails With Python](https://realpython.com/python-send-email/)
+* [email:Examples](https://docs.python.org/3/library/email.examples.html)
+### Linux last
+* [Linux last Command](https://www.baeldung.com/linux/last-command)
+### Linux cron
+* [How to Automate Tasks with cron Jobs in Linux](https://www.freecodecamp.org/news/cron-jobs-in-linux/)
+* [How to Load Environment Variables in a Cron Job](https://www.baeldung.com/linux/load-env-variables-in-cron-job)
+
