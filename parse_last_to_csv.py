@@ -7,8 +7,11 @@ import subprocess
 def get_log(logtype="last", since="yesterday"):
     raw_log = subprocess.run(["sudo", logtype, "-F", "-s", since],
                              stdout=subprocess.PIPE)
-    log = raw_log.stdout.decode("utf-8")
-    return log
+    if raw_log.returncode == 0:
+        log = raw_log.stdout.decode("utf-8")
+        return log
+    else:
+        return None
 
 
 def parse_log_to_csv(log_file):
@@ -28,16 +31,19 @@ def parse_log_to_csv(log_file):
 if __name__ == "__main__":
     try:
         logtype = sys.argv[1]
-        if logtype != "lastb":
-            raise Exception("wrong logtype")
-    except Exception as e:
+        if logtype != "lastb":  # add logic for last
+            raise SyntaxError("error: wrong command")
+    except:  # Generic exception used to catch both SyntaxError and IndexError
         logtype = "last"
     try:
         since = sys.argv[2]
+    except IndexError:
+        since = "yesterday"
+    finally:
         file_name = f"{logtype}_since_{since.replace(' ', '_')}.csv"
-        csv = parse_log_to_csv(get_log(logtype, since))
-        with open(file_name, "w") as f:
-            f.write(csv)
-        print(f"Saved {logtype} login since {since} as: {file_name}")
-    except Exception as e:
-        print(e)
+        raw_log = get_log(logtype, since)    
+        if raw_log: 
+            csv = parse_log_to_csv(raw_log)
+            with open(file_name, "w") as f:
+                f.write(csv)
+            print(f"Saved {logtype} login since {since} as: {file_name}")
