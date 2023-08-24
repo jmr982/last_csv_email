@@ -25,7 +25,7 @@ def email_message(email_from, email_to, subject, body, attachments=None):
 def email_send(smtp_server, email_auth, email_from, email_to, email_message):
     server = SMTP_SSL(smtp_server, port=SMTP_SSL_PORT)
     server.login(email_from, email_auth)
-    server.sendmail(email_from, email_to, email_message.as_bytes())
+    server.sendmail(email_from, email_to.split(","), email_message.as_bytes())
     server.quit()
     return None
 
