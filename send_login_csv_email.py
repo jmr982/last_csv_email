@@ -12,13 +12,14 @@ def main(smtp_server, email_auth, email_from, email_to):
     lastb = bytes(parse_log_to_csv(get_log("lastb")), "utf-8")
     subject = f"Login data: {today}"
     body = "Attached last and lastb since 'yesterday'."
-    attachments = [{"data":last, "name": f"last_{today}.csv"},
-            {"data": lastb, "name": f"lastb_{today}.csv"}]
-    message = email_message(f"{os.uname()[1]} <{email_from}>",
-            email_to,
-            subject,
-            body,
-            attachments)
+    # Add attachments to a list of dictionaries
+    attachments = [{"data": last, "name": f"last_{today}.csv"},
+                   {"data": lastb, "name": f"lastb_{today}.csv"}]
+    message = email_message(f"{os.uname()[1]} <{email_from}>",  # Hostname (server) used for the sender
+                            email_to,
+                            subject,
+                            body,
+                            attachments)
     email_send(smtp_server, email_auth, email_from, email_to, message)
     return None
 
