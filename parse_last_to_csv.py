@@ -6,7 +6,7 @@ import subprocess
 
 def get_log(logtype="last", since="yesterday"):
     raw_log = subprocess.run(["sudo", logtype, "-F", "-s", since],
-                             stdout=subprocess.PIPE)
+            stdout=subprocess.PIPE)
     if raw_log.returncode == 0:
         log = raw_log.stdout.decode("utf-8")
         return log
@@ -28,6 +28,17 @@ def parse_log_to_csv(log_file):
     return log_csv
 
 
+def main(logtype, since):
+    file_name = f"{logtype}_since_{since.replace(' ', '_')}.csv"
+    log = get_log(logtype, since)    
+    if log: 
+        csv = parse_log_to_csv(log)
+        with open(file_name, "w") as f:
+            f.write(csv)
+        print(f"Saved {logtype} login since {since} as: {file_name}")
+    return None
+
+
 if __name__ == "__main__":
     try:
         logtype = sys.argv[1]
@@ -43,10 +54,4 @@ if __name__ == "__main__":
     except IndexError:
         since = "yesterday"
     finally:
-        file_name = f"{logtype}_since_{since.replace(' ', '_')}.csv"
-        raw_log = get_log(logtype, since)    
-        if raw_log: 
-            csv = parse_log_to_csv(raw_log)
-            with open(file_name, "w") as f:
-                f.write(csv)
-            print(f"Saved {logtype} login since {since} as: {file_name}")
+        main(logtype, since)
